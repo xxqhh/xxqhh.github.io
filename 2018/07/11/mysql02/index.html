@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="数据库的查询 数据库查询是数据库中比较重要的一部分。通过建立一个数据库，添加一些数据来测试查询">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql基础学习（二）">
+<meta property="og:url" content="http://wsxq.online/2018/07/11/mysql02/index.html">
+<meta property="og:site_name" content="尘埃的博客">
+<meta property="og:description" content="数据库的查询 数据库查询是数据库中比较重要的一部分。通过建立一个数据库，添加一些数据来测试查询">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-11T08:27:59.546Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql基础学习（二）">
+<meta name="twitter:description" content="数据库的查询 数据库查询是数据库中比较重要的一部分。通过建立一个数据库，添加一些数据来测试查询">
+
+
+
+
+
+
+  <link rel="canonical" href="http://wsxq.online/2018/07/11/mysql02/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>mysql基础学习（二） | 尘埃的博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">尘埃的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">听从你心，无问西东</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />公益 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://wsxq.online/2018/07/11/mysql02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xxqhh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘埃的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">mysql基础学习（二）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-11 16:14:17 / 修改时间：16:27:59" itemprop="dateCreated datePublished" datetime="2018-07-11T16:14:17+08:00">2018-07-11</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/11/mysql02/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/2018/07/11/mysql02/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="数据库的查询"><a href="#数据库的查询" class="headerlink" title="数据库的查询"></a>数据库的查询</h1><blockquote>
+<p>数据库查询是数据库中比较重要的一部分。通过建立一个数据库，添加一些数据来测试查询</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="数据库的准备"><a href="#数据库的准备" class="headerlink" title="数据库的准备"></a>数据库的准备</h2><ol>
+<li>创建一个数据库</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table python_test charset=utf8;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>使用一个数据库</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use python_test</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>显示使用的当前数据库是哪个</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select database();</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>创建一个数据表</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">   student表</span><br><span class="line">   create table students(</span><br><span class="line">    id int unsigned primary key auto_increment not null,</span><br><span class="line">    name varchar(20) default &apos;&apos;,</span><br><span class="line">    age tinyint unsigned default 0,</span><br><span class="line">    height decimal(5,2),</span><br><span class="line">    gender enum(&apos;男&apos;,&apos;女&apos;,&apos;保密&apos;) default &apos;保密&apos;,</span><br><span class="line">    cls_id int unsigned default 0,</span><br><span class="line">    is_delete bit default 0</span><br><span class="line">);</span><br><span class="line">classes表</span><br><span class="line">create table classes (</span><br><span class="line">    id int unsigned auto_increment primary key not null,</span><br><span class="line">    name varchar(30) not null</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><ol>
+<li>查询所有字段</li>
+</ol>
+<p>select * from 表名；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select * from students;</span><br><span class="line">select * from classes;</span><br><span class="line">select id, name from classes;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>查询指定字段</li>
+</ol>
+<p>select 列1,列2,… from 表名;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select name, age from students;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>使用 as 给字段起别名</li>
+</ol>
+<p>select 字段 as 名字…. from 表名;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select name as 姓名, age as 年龄 from  students;</span><br></pre></td></tr></table></figure>
+<p>select 表名.字段 …. from 表名;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select students.name, students.age from students;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>可以通过 as 给表起别名</li>
+</ol>
+<p>select 别名.字段 …. from 表名 as 别名;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select s.name, s.age from students as s;</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>消除重复行</li>
+</ol>
+<p>distinct字段 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select distinct gender from students;</span><br></pre></td></tr></table></figure>
+<h2 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h2><ul>
+<li>比较运算符</li>
+</ul>
+<ol>
+<li>></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询大于18岁的信息</span><br><span class="line">select * from students where age &gt; 18;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>&lt;</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询小于18岁的信息</span><br><span class="line">select * from students where age &lt; 18;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>&lt;=</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询小于或者等于18岁的信息</span><br><span class="line">select * from students where age &lt;= 18;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>!=或&lt;&gt;</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 查询不等于18岁的信息</span><br><span class="line">select * from students where age != 18;</span><br><span class="line">select * from students where age &lt;&gt; 18;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>逻辑运算符</li>
+</ul>
+<ol>
+<li>and</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 18到28之间的所以学生信息</span><br><span class="line">select * from students where age &gt; 18 and age &lt; 28;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>or</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 18以上或者身高查过180(包含)以上</span><br><span class="line">select * from students where age &gt; 18 or height &gt;= 180;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>not</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 不在 18岁以上的女性 这个范围内的信息</span><br><span class="line">select * from students where not (age &gt; 18 and gender = 2);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>模糊查询</li>
+</ul>
+<ol>
+<li>like</li>
+</ol>
+<blockquote>
+<p>% 替换1个或者多个</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 查询姓名中 以 &quot;小&quot; 开始的名字</span><br><span class="line">select name from students where nama like &quot;小%&quot;；</span><br><span class="line"># 查询姓名中 有 &quot;小&quot; 所有的名字</span><br><span class="line">select name from students where name like &quot;%小%&quot;；</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p> _ 替换1个</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 查询有2个字的名字</span><br><span class="line">select name from students where name like &quot;__&quot;;</span><br><span class="line"># 查询有3个字的名字</span><br><span class="line">select name from students where name like &quot;___&quot;;</span><br><span class="line"># 查询至少有2个字的名字</span><br><span class="line">select name from students where name like &quot;__%&quot;;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>rlike 正则</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 查询以 周开始的姓名</span><br><span class="line">select name from students where name rlike &quot;^周.*&quot;</span><br><span class="line"># 查询以 周开始、伦结尾的姓名</span><br><span class="line">select name from students where name rlike &quot;^周.*伦$&quot;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>范围查询</li>
+</ul>
+<ol>
+<li>in (1, 3 ,8)表示在一个非连续范围内</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 查询 年龄为18、34的姓名</span><br><span class="line">select name, age from students where age = 18 or age = 34;</span><br><span class="line">select name, age from students where age in (18, 34);</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>not in 不在这些范围内的数(非连续范围内)</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 年龄不是 18、34岁的信息</span><br><span class="line">select name, age from students where age not in (18, 34);</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>between … and …表示在一个连续的范围内</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询 年龄在18到34之间的信息</span><br><span class="line">select * from students where age between 18 and 34;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>not between  … and …表示不在一个连续的范围内</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询 年龄不在18到34之间的信息</span><br><span class="line">select * from students where age not between 18 and 34;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>空判断</li>
+</ul>
+<ol>
+<li>判空 is null</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询身高为空的信息</span><br><span class="line">select * from students where height is null;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>判非空 is not null</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询身高不为空的信息</span><br><span class="line">select * from students where height is not null;;</span><br></pre></td></tr></table></figure>
+<h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><ul>
+<li>order by 字段</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># asc 从小到大排列，即升序</span><br><span class="line"># desc 从大到小排列，即降序</span><br><span class="line"># 查询年龄在18到34岁之间的男性，按照年龄从小到大排序</span><br><span class="line">select * from students where (age between 18 and 34) and gender=1 order by age asc;</span><br><span class="line"># 查询年龄在18到34岁之间的女性，身高从高到矮排序</span><br><span class="line">select * from students where (age between 18 and 34) and gender=2 order by height desc;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>order by 多个字段</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 查询年龄在18到34岁之间的女性，身高从高到矮排序, 如果身高相同的情况下按照年龄从小到大排序</span><br><span class="line">select * from students where (age between 18 and 34) and gender=2 order by height desc, age asc;</span><br><span class="line">#  查询年龄在18到34岁之间的女性，身高从高到矮排序, 如果身高相同的情况下按照年龄从小到大排序,如果年龄也相同那么按照id从大到小排序</span><br><span class="line">select * from students where (age between 18 and 34) and gender=2 order by height desc,age asc,id desc;</span><br></pre></td></tr></table></figure>
+<h2 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h2><ul>
+<li>总数（count）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询男性有多少人</span><br><span class="line">select count(*) as 男性人数 from students where gender = 1;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>最大值（max）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询最大的年龄</span><br><span class="line">select max(age) as 最大年龄 from students;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>最小值（min）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询最小的年龄</span><br><span class="line">select min(age) as 最小年龄 from students;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>求和（sum）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 计算所有人的年龄总和</span><br><span class="line">select sum(age) as 年龄之和 from students;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>平均值（avg）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 计算平均年龄</span><br><span class="line">select avg(age) as 平均年龄 from students;</span><br></pre></td></tr></table></figure>
+<h2 id="分组"><a href="#分组" class="headerlink" title="分组"></a><a href="http://baijiahao.baidu.com/s?id=1595349117525189591&amp;wfr=spider&amp;for=pc" target="_blank" rel="noopener">分组</a></h2><ul>
+<li>group by</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 按照性别分组,查询所有的性别</span><br><span class="line">select gender from students group by gender;</span><br><span class="line"># 计算每种性别中的人数</span><br><span class="line">select gender,count(*) from students group by gender;</span><br><span class="line"># 计算男性的人数</span><br><span class="line">select gender,count(*) from students where gender=1 group by gender;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>group_concat(…)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 查询同种性别中的姓名</span><br><span class="line">select gender,group_concat(name) from students group by gender;</span><br><span class="line">select gender,group_concat(name, age, id) from students group by gender;</span><br><span class="line">select gender,group_concat(name, &quot;_&quot;, age, &quot; &quot;, id) from students group by gender;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>having</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 查询平均年龄超过30岁的性别，以及姓名</span><br><span class="line">select gender, name from students group by gender having avg(age) &gt; 30;</span><br><span class="line"># 查询每种性别中的人数多于2个的信息</span><br><span class="line">select * from students group by gender having count(*) &gt; 2;</span><br></pre></td></tr></table></figure>
+<h2 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h2><ul>
+<li>limit start, count</li>
+</ul>
+<ol>
+<li>限制查询出来的数据个数</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询前5个数据</span><br><span class="line">select * from students limit 5;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>限制查询初始位置，终止位置</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#  查询id6-10（包含）</span><br><span class="line">select * from students limit 5, 10;</span><br><span class="line"># 可以实现网页的分页功能</span><br><span class="line"># 每页显示2个，第1个页面</span><br><span class="line">select * from students limit 0,2;</span><br><span class="line"># 每页显示2个，第2个页面</span><br><span class="line">select * from students limit 2,2;</span><br><span class="line"># 每页显示2个，第3个页面</span><br><span class="line">select * from students limit 4,2;</span><br><span class="line"># 每页显示2个，第4个页面</span><br><span class="line">select * from students limit 6,2; --------&gt; limit (第N页-1)*每页的个数，每页的个数</span><br><span class="line"># 每页显示2个，显示第6页的信息, 按照年龄从小到大排序</span><br><span class="line">select * from students order byg age asc limit 10,2;</span><br></pre></td></tr></table></figure>
+<h2 id="连接查询"><a href="#连接查询" class="headerlink" title="连接查询"></a>连接查询</h2><ul>
+<li>inner join … on</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># select ... from 表A inner join 表B;</span><br><span class="line">select * from students inner join classes;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>有能够对应班级的学生以及班级信息</li>
+</ol>
+<blockquote>
+<p>select * from students inner join classes on students.cls_id=classes.id;</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 按照要求显示姓名、班级</span><br><span class="line">select students.name,classes.name from students inner join classes on students.cls_id=classes.id;</span><br><span class="line"># 给数据表起名字</span><br><span class="line">select s.name, c.name from students as s inner join classes as c on s.cls_id = c.id;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>有能够对应班级的学生以及班级信息，显示学生的所有信息，只显示班级名称</li>
+</ol>
+<blockquote>
+<p>select s.*,c.name from students as s inner join classes as c on s.cls_id=c.id;</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 在以上的查询中，将班级姓名显示在第1列</span><br><span class="line">select c.name, s.* from students as s inner join classes as c on s.cls_id=c.id;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>有能够对应班级的学生以及班级信息, 按照班级进行排序</li>
+</ol>
+<blockquote>
+<p>select c.xxx s.xxx from student as s inner join clssses as c on …. order by ….;</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select c.name,s from students inner join class as c on s.cls_id=c.id order by c.name;</span><br><span class="line">#当是同一个班级的时候，按照学生的id进行从小到大排序</span><br><span class="line">select c.name,s from students inner join class as c on s.cls_id=c.id order by c.name,s.id;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>left join</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 查询每位学生对应的班级信息</span><br><span class="line">select * from student as s left join class as c on s.cls_id=c.id;</span><br><span class="line"># 查询没有对应班级信息的学生</span><br><span class="line">#select ... from xxx as s left join xxx as c on..... where .....</span><br><span class="line">#select ... from xxx as s left join xxx as c on..... having .....</span><br><span class="line">select * from students as s left join classes c on s.cls_id=c.id having c.id is null;</span><br><span class="line">select * from students as s left join classes as c on s.cls_id=c.id where c.id is null;</span><br></pre></td></tr></table></figure>
+<h2 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h2><ul>
+<li>标量子查询</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询最高的男生信息</span><br><span class="line">select * from students where height = (select max(height) from students);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>列表子查询</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查询学生的班级号能够对应的学生信息</span><br><span class="line">select * from students where cls_id in (select id from classes);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/04/mysql01/" rel="next" title="mysql基础学习（一）">
+                <i class="fa fa-chevron-left"></i> mysql基础学习（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/1.jpg"
+                alt="xxqhh" />
+            
+              <p class="site-author-name" itemprop="name">xxqhh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xxqhh" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.imooc.com" title="慕课网" target="_blank">慕课网</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.shiyanlou.com" title="实验楼" target="_blank">实验楼</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+<div id="music163player">
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=25721157&auto=1&height=66"></iframe>
+</div>
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库的查询"><span class="nav-number">1.</span> <span class="nav-text">数据库的查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库的准备"><span class="nav-number">1.1.</span> <span class="nav-text">数据库的准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询"><span class="nav-number">1.2.</span> <span class="nav-text">查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条件查询"><span class="nav-number">1.3.</span> <span class="nav-text">条件查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序"><span class="nav-number">1.4.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聚合函数"><span class="nav-number">1.5.</span> <span class="nav-text">聚合函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分组"><span class="nav-number">1.6.</span> <span class="nav-text">分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分页"><span class="nav-number">1.7.</span> <span class="nav-text">分页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接查询"><span class="nav-number">1.8.</span> <span class="nav-text">连接查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子查询"><span class="nav-number">1.9.</span> <span class="nav-text">子查询</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xxqhh</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Muse</a> v6.3.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: '[object Object]',
+            repo: 'https://github.com/xxqhh/xqhome',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '[object Object]',
+            
+                client_id: '[object Object]'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
